@@ -8,20 +8,20 @@ tasks:
     command: |
       sudo apt-get update -y
       python3 -m pip install --upgrade pip
-      pip install -r requirements.txt
-      sudo apt-get update
+      # pip install -r requirements.txt
       gp sync-done envs_init
       date
   - name: pipenv
     command: |
       gp sync-await envs_init
       pipenv install
-      pipenv shell
       gp sync-done pipenv
   - name: run
     command: |
       date
       gp sync-await pipenv
+      cp config.yml.default config.yml
+      pipenv shell
       python3 ./main.py
 
 
