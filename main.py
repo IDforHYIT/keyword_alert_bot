@@ -642,13 +642,17 @@ async def _list(event):
           if channel_name:
             channel_username = f'channel username: {channel_name}\n'
 
-        channel_url = f'<a href="{channel_url}-1">{"https://t.me/"+channel_name if channel_name else channel_url}</a>'
-        msg += f'id:{sub_id}\n{_type}: {keywords}\n{channel_title}{channel_username}channel url: {channel_url}\n---\n'
-      
-      text, entities = html.parse(msg)# 解析超大文本 分批次发送 避免输出报错
+        channel_url = f'{"https://t.me/"+channel_name}'
+        msg += f'id:\t <code>{sub_id}</code> \n' \
+               f'{_type}:\t <code>{keywords}</code> \n' \
+               f'{channel_title}{channel_username}' \
+               f'channel url:\t {channel_url}\n' \
+               f'---\n'
+
+      text, entities = html.parse(msg)  # 解析超大文本 分批次发送 避免输出报错
       for text, entities in telethon_utils.split_text(text, entities):
         # await client.send_message(chat, text, formatting_entities=entities)
-        await event.respond(text,formatting_entities=entities) 
+        await event.respond(text, formatting_entities=entities, link_preview=False)
     else:
       await event.respond('not found list')
   else:
